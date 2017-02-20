@@ -1,5 +1,5 @@
 {
-   "name": "first_lst",
+   "name": "first_last",
    "abstract": "Aggregate functions to return first or last \"n\" elements in a group",
    "description": "Provides first(anyelement), first(anyelement, int4), last(anyelement) and last(anyelement, int4) aggregates. Dual-argument aggregates return arrays of base type, while single-argument aggregats return just single value",
    "version": "0.1.0",
