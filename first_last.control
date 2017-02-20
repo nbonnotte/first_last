@@ -1,0 +1,5 @@
+#extesion
+comment = 'Aggregate functions to return first or last "n" elements in a group'
+default_version = '0.1.0'
+relocatable = false
+superuser = false

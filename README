@@ -1,0 +1,70 @@
+Aggregates to return first or last values/rows
+======================================
+
+This extension provides four aggregates:
+- first(anyelement)
+- first(anyelement, int4)
+- last(anyelement)
+- last(anyelement, int4)
+
+Which return respectively first or last values in given column. In case
+two-argument version is used, it will return up to this value elements,
+as array.
+
+It can be loaded by any user, as it only uses SQL language.
+
+
+Building and install
+--------
+Obtain sources:
+- from github: https://github.com/depesz/first_last
+- or from PGXN: http://pgxn.org/dist/first_last/
+
+Run (in top directory):
+$ make install
+
+or, if you have pgxn client installed, just:
+$ pgxn install first_last
+
+Then, in PostgreSQL you can do:
+
+$ CREATE EXTENSION first_last;
+
+or:
+
+$ CREATE SCHEMA first_last;
+$ CREATE EXTENSION first_last WITH SCHEMA first_last;
+
+Afterwards, you can use provided function (optionally prefixing it with
+schema name) in your queries.
+
+Example
+-------
+In example below, I assume you created the extension in public schema,
+or you added its schema to search_path.
+
+Get 5 largest tables and indexes with their base size:
+
+select
+    relkind,
+    first( relname, 5 order by relpages desc ) as names,
+    first( relpages, 5 order by relpages desc ) as sizes
+from pg_class
+where relkind in ('r', 'i')
+group by relkind;
+-[ RECORD 1 ]-------------------------------------------------------------------------------------------------------------------------------------------
+relkind | i
+names   | {pg_depend_reference_index,pg_depend_depender_index,pg_proc_proname_args_nsp_index,pg_description_o_c_o_index,pg_attribute_relid_attnam_index}
+sizes   | {44,40,32,21,13}
+-[ RECORD 2 ]-------------------------------------------------------------------------------------------------------------------------------------------
+relkind | r
+names   | {pg_proc,pg_depend,pg_attribute,pg_description,pg_statistic}
+sizes   | {73,54,47,34,16}
+
+Similarly you can use last(). If you want to return just one value, it's
+better to use single-argument version of the aggregates, as it will be
+slightly faster.
+
+-- 
+Hubert depesz Lubaczewski
+depesz@depesz.com
