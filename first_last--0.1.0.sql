@@ -59,7 +59,7 @@ create or replace function agg_last(
     as $$
 select ( case
     when array_length( p_state, 1 ) >= p_limit
-        then p_state[(array_upper(p_state, 1) - p_limit + 2):]
+        then p_state[(array_upper(p_state, 1) - p_limit + 2):array_upper( p_state, 1 )]
     else
         p_state
     end ) || p_new_element;
